@@ -27,7 +27,13 @@ void binary_tree_free(BinaryTreeNode* root) {
 }
 
 static void binary_tree_traverse_preorder_aux(BinaryTreeNode* node, void (*visit)(BinaryTreeNode* node, int depth), int current_depth) {
-    // código aqui
+    if (node == NULL) {
+        return;
+    }
+
+    visit(node, current_depth);
+    binary_tree_traverse_preorder_aux(node->left, visit, current_depth+1);
+    binary_tree_traverse_preorder_aux(node->right, visit, current_depth+1);
 }
 
 void binary_tree_traverse_preorder(BinaryTreeNode* root, void (*visit)(BinaryTreeNode* node, int depth)) {
@@ -35,7 +41,13 @@ void binary_tree_traverse_preorder(BinaryTreeNode* root, void (*visit)(BinaryTre
 }
 
 static void binary_tree_traverse_inorder_aux(BinaryTreeNode* node, void (*visit)(BinaryTreeNode* node, int depth), int current_depth) {
-    // código aqui
+    if (node == NULL) {
+        return;
+    }
+
+    binary_tree_traverse_inorder_aux(node->left, visit, current_depth+1);
+    visit(node, current_depth);
+    binary_tree_traverse_inorder_aux(node->right, visit, current_depth+1);
 }
 
 void binary_tree_traverse_inorder(BinaryTreeNode* root, void (*visit)(BinaryTreeNode* node, int depth)){
@@ -43,7 +55,13 @@ void binary_tree_traverse_inorder(BinaryTreeNode* root, void (*visit)(BinaryTree
 }
 
 static void binary_tree_traverse_postorder_aux(BinaryTreeNode* node, void (*visit)(BinaryTreeNode* node, int depth), int current_depth) {
-    // código aqui
+    if (node == NULL) {
+        return;
+    }
+
+    binary_tree_traverse_postorder_aux(node->left, visit, current_depth+1);
+    binary_tree_traverse_postorder_aux(node->right, visit, current_depth+1);
+    visit(node, current_depth);
 }
 
 void binary_tree_traverse_postorder(BinaryTreeNode* root, void (*visit)(BinaryTreeNode* node, int depth)){
