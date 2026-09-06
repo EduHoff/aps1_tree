@@ -26,6 +26,22 @@ void nary_tree_free(NaryTreeNode* root) {
     free(root);
 }
 
+static void nary_tree_traverse_preorder_aux(NaryTreeNode* node, void (*visit)(NaryTreeNode* node, int depth), int current_depth) {
+    // código aqui
+}
+
+void nary_tree_traverse_preorder(NaryTreeNode* root, void (*visit)(NaryTreeNode* node, int depth)) {
+    nary_tree_traverse_preorder_aux(root, visit, 0);
+}
+
+static void nary_tree_traverse_postorder_aux(NaryTreeNode* node, void (*visit)(NaryTreeNode* node, int depth), int current_depth) {
+    // código aqui
+}
+
+void nary_tree_traverse_postorder(NaryTreeNode* root, void (*visit)(NaryTreeNode* node, int depth)) {
+    nary_tree_traverse_postorder_aux(root, visit, 0);
+}
+
 // Busca um nó na árvore comparando os dados.
 NaryTreeNode* nary_tree_find(NaryTreeNode* root, const void* target_data, int (*compare)(const void*, const void*));
 
@@ -34,6 +50,3 @@ int nary_tree_add_child(NaryTreeNode* parent_node, void* data, int weight);
 
 // Desconecta o nó da árvore, ajusta os ponteiros dos vizinhos e apaga a subárvore.
 int nary_tree_remove_node(NaryTreeNode* root, NaryTreeNode* target);
-
-// Visita todos os nós em ordem e executa uma ação a cada passo.
-void nary_tree_traverse(NaryTreeNode* root, void (*visit)(NaryTreeNode* node, int depth));
