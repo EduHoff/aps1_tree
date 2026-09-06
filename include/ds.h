@@ -7,5 +7,12 @@ typedef struct NaryTreeNode {
     struct NaryTreeNode* next_sibling;
 } NaryTreeNode;
 
-NaryTreeNode* create_node(void* data, int weight);
-void free_tree(NaryTreeNode* root);
+typedef struct BinaryTreeNode {
+    void* data;
+    int weight;
+    struct BinaryTreeNode* left;
+    struct BinaryTreeNode* right;
+} BinaryTreeNode;
+
+NaryTreeNode* nary_tree_create_node(void* data, int weight);
+void nary_tree_free(NaryTreeNode* root);
