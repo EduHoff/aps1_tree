@@ -10,8 +10,13 @@ typedef struct NaryTreeNode {
 NaryTreeNode* nary_tree_create_node(void* data, int weight);
 void nary_tree_free(NaryTreeNode* root);
 
-void nary_tree_traverse_preorder(NaryTreeNode* root, void (*visit)(NaryTreeNode* node, int depth));
-void nary_tree_traverse_postorder(NaryTreeNode* root, void (*visit)(NaryTreeNode* node, int depth));
+typedef void (*NaryTreeFn)(NaryTreeNode* node, int depth, void* args);
+void nary_tree_traverse_preorder(NaryTreeNode* root, NaryTreeFn fn, void* args);
+void nary_tree_traverse_postorder(NaryTreeNode* root, NaryTreeFn fn, void* args);
+
+NaryTreeNode* nary_tree_find(NaryTreeNode* root, const void* target_data, int (*compare)(const void*, const void*));
+int nary_tree_add_child(NaryTreeNode* parent_node, void* data, int weight);
+int nary_tree_remove_node(NaryTreeNode* root, NaryTreeNode* target);
 
 
 typedef struct BinaryTreeNode {
@@ -24,6 +29,7 @@ typedef struct BinaryTreeNode {
 BinaryTreeNode* binary_tree_create_node(void* data, int weight);
 void binary_tree_free(BinaryTreeNode* root);
 
-void binary_tree_traverse_preorder(BinaryTreeNode* root, void (*visit)(BinaryTreeNode* node, int depth));
-void binary_tree_traverse_inorder(BinaryTreeNode* root, void (*visit)(BinaryTreeNode* node, int depth));
-void binary_tree_traverse_postorder(BinaryTreeNode* root, void (*visit)(BinaryTreeNode* node, int depth));
+typedef void (*BinaryTreeFn)(BinaryTreeNode* node, int depth, void* args);
+void binary_tree_traverse_preorder(BinaryTreeNode* root, BinaryTreeFn fn, void* args);
+void binary_tree_traverse_inorder(BinaryTreeNode* root, BinaryTreeFn fn, void* args);
+void binary_tree_traverse_postorder(BinaryTreeNode* root, BinaryTreeFn fn, void* args);

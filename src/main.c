@@ -15,7 +15,7 @@ int main(void) {
     ger_ti->first_child = dev;
     ger_vendas->first_child = analista;
 
-    print_organogram(diretor);
+    nary_tree_print_organogram(diretor);
     nary_tree_free(diretor);
 
     BinaryTreeNode* root = binary_tree_create_node("A", 1);
@@ -30,6 +30,7 @@ int main(void) {
     node_b->left = node_d;
     node_b->right = node_e;
 
+    binary_tree_print_organogram(root);
     binary_tree_free(root);
 
     return 0;
