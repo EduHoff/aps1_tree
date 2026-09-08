@@ -44,3 +44,20 @@ static void nary_tree_traverse_postorder_aux(NaryTreeNode* node, NaryTreeFn fn, 
 void nary_tree_traverse_postorder(NaryTreeNode* root, NaryTreeFn fn, void* args) {
     nary_tree_traverse_postorder_aux(root, fn, args, 0);
 }
+
+NaryTreeNode* nary_tree_find(NaryTreeNode* root, const void* target_data, int (*compare)(const void*, const void*)) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    if (compare(root->data, target_data) == 0) {
+        return root;
+    }
+
+    NaryTreeNode* found = nary_tree_find(root->first_child, target_data, compare);
+    if (found != NULL) {
+        return found;
+    }
+
+    return nary_tree_find(root->next_sibling, target_data, compare);
+}

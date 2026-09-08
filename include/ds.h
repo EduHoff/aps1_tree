@@ -33,3 +33,5 @@ typedef void (*BinaryTreeFn)(BinaryTreeNode* node, int depth, void* args);
 void binary_tree_traverse_preorder(BinaryTreeNode* root, BinaryTreeFn fn, void* args);
 void binary_tree_traverse_inorder(BinaryTreeNode* root, BinaryTreeFn fn, void* args);
 void binary_tree_traverse_postorder(BinaryTreeNode* root, BinaryTreeFn fn, void* args);
+
+BinaryTreeNode* binary_tree_find(BinaryTreeNode* root, const void* target_data, int (*compare)(const void*, const void*));

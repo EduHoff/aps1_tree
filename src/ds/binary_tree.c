@@ -56,3 +56,20 @@ static void binary_tree_traverse_postorder_aux(BinaryTreeNode* node, BinaryTreeF
 void binary_tree_traverse_postorder(BinaryTreeNode* root, BinaryTreeFn fn, void* args) {
     binary_tree_traverse_postorder_aux(root, fn, args, 0);
 }
+
+BinaryTreeNode* binary_tree_find(BinaryTreeNode* root, const void* target_data, int (*compare)(const void*, const void*)) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    if (compare(root->data, target_data) == 0) {
+        return root;
+    }
+
+    BinaryTreeNode* found = binary_tree_find(root->left, target_data, compare);
+    if (found != NULL) {
+        return found;
+    }
+
+    return binary_tree_find(root->right, target_data, compare);
+}
