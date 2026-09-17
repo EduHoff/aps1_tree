@@ -1,0 +1,9 @@
+services:
+  aps1_tree:
+    build: .
+    container_name: aps1_tree
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+      - /app/build
