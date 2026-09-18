@@ -1,12 +1,11 @@
 #include "ds.h"
 #include <stdlib.h>
 
-BinaryTree* create_node(void* data, int weight) {
+BinaryTree* create_node(void* data) {
     BinaryTree* new_node = (BinaryTree*) malloc(sizeof(BinaryTree));
     if (new_node == NULL) return NULL;
 
     new_node->data = data;
-    new_node->weight = weight;
     new_node->height = 1;
     new_node->left = NULL;
     new_node->right = NULL;
@@ -27,7 +26,21 @@ int get_height(BinaryTree* node) {
     return node->height;
 }
 
-//get_balance_factor(node): Retorna get_height(node->left) - get_height(node->right)
-// update_height(node): Atualiza a altura do nó atual comparando os filhos -> 1 + max(get_height(node->left), get_height(node->right))
+int get_balance_factor(BinaryTree* node){
+    return get_height(node->left) - get_height(node->right);
+}
+
+static int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+void update_height(BinaryTree* node) {
+    if (node == NULL) return;
+
+    int left_h = get_height(node->left);
+    int right_h = get_height(node->right);
+
+    node->height = 1 + max(left_h, right_h);
+}
 
 //tree_insert
