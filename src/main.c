@@ -1,9 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "ds.h"
 #include "utils.h"
-
 
 int main(void) {
     clear_screen();
 
+    BinaryTree* root = NULL;
+
+    int values[] = {10, 20, 30, 40, 50, 25};
+    int n = sizeof(values) / sizeof(values[0]);
+
+    printf("=== TESTE DE INSERCAO NA ARVORE AVL ===\n\n");
+
+    for (int i = 0; i < n; i++) {
+        printf("----------------------------------------\n");
+        printf("Inserindo o valor: %d\n", values[i]);
+
+        root = tree_insert(root, &values[i], compare_ints);
+
+        printf("\nEstrutura atual da arvore (deitada):\n");
+        print_tree(root, print_int);
+        printf("\n----------------------------------------\n\n");
+    }
+
+
+    tree_free(root);
     return 0;
 }
 

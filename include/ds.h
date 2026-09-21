@@ -7,7 +7,10 @@ typedef struct BinaryTree {
     struct BinaryTree* right;
 } BinaryTree;
 
+typedef int (*CompareFn)(const void* a, const void* b);
+
 BinaryTree* create_node(void* data);
 void tree_free(BinaryTree* root);
-int get_height(BinaryTree* node);
-int get_balance_factor(BinaryTree* node);
+BinaryTree* tree_insert(BinaryTree* root, void* data, CompareFn compare);
+
+

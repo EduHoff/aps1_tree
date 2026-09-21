@@ -43,4 +43,66 @@ void update_height(BinaryTree* node) {
     node->height = 1 + max(left_h, right_h);
 }
 
-//tree_insert
+BinaryTree* rotate_left(BinaryTree* x) {
+    BinaryTree* y = x->right;
+    BinaryTree* T2 = y->left;
+
+    y->left = x;
+    x->right = T2;
+
+    update_height(x);
+    update_height(y);
+
+    return y;
+}
+
+BinaryTree* rotate_right(BinaryTree* y) {
+    BinaryTree* x = y->left;
+    BinaryTree* T2 = x->right;
+
+    x->right = y;
+    y->left = T2;
+
+    update_height(y);
+    update_height(x);
+
+    return x;
+}
+
+BinaryTree* tree_insert(BinaryTree* root, void* data, CompareFn compare) {
+    if (root == NULL) return create_node(data);
+
+    int cmp = compare(data, root->data);
+
+    if (cmp < 0) {
+        root->left = tree_insert(root->left, data, compare);
+    } else if (cmp > 0) {
+        root->right = tree_insert(root->right, data, compare);
+    } else {
+        return root;
+    }
+
+    update_height(root);
+
+    int balance = get_balance_factor(root);
+
+    if (balance > 1 && root->left != NULL && compare(data, root->left->data) < 0) {
+        return rotate_right(root);
+    }
+
+    if (balance < -1 && root->right != NULL && compare(data, root->right->data) > 0) {
+        return rotate_left(root);
+    }
+
+    if (balance > 1 && root->left != NULL && compare(data, root->left->data) > 0) {
+        root->left = rotate_left(root->left);
+        return rotate_right(root);
+    }
+
+    if (balance < -1 && root->right != NULL && compare(data, root->right->data) < 0) {
+        root->right = rotate_right(root->right);
+        return rotate_left(root);
+    }
+
+    return root;
+}
