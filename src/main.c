@@ -3,42 +3,102 @@
 #include "ds.h"
 #include "utils.h"
 
-int main(void) {
+static void traverse_inorder_step_by_step(BinaryTree* node, BinaryTree* root) {
+    if (node == NULL) return;
+
+    traverse_inorder_step_by_step(node->left, root);
+
     clear_screen();
+    printf("=== VISUALIZACAO PASSO A PASSO DO PERCURSO (EM-ORDEM) ===\n\n");
+    print_tree_highlight(root, print_int, node);
+    printf("\n[Sinalizador '==>'] Visitando o no: %d\n", *(int*)node->data);
+    printf("Pressione Enter para ir ao proximo no...");
+    getchar();
 
+    traverse_inorder_step_by_step(node->right, root);
+}
+
+int main(void) {
     BinaryTree* root = NULL;
+    int option = 0;
+    int value = 0;
 
-    int values[] = {10, 20, 30, 40, 50, 25};
-    int n = sizeof(values) / sizeof(values[0]);
+    while (1) {
+        clear_screen();
+        printf("=======================================\n");
+        printf("      SISTEMA DE GERENCIAMENTO AVL     \n");
+        printf("=======================================\n");
+        printf(" 1. Inserir Elemento\n");
+        printf(" 2. Remover Elemento\n");
+        printf(" 3. Percorrer Passo a Passo (Em-Ordem)\n");
+        printf(" 4. Visualizar Arvore Atual\n");
+        printf(" 5. Executar Desafio 1 (Benchmark de Buscas)\n");
+        printf(" 0. Sair\n");
+        printf("=======================================\n");
+        printf("Escolha uma opcao: ");
 
-    printf("=== TESTE DE INSERCAO NA ARVORE AVL ===\n\n");
+        if (scanf("%d", &option) != 1) break;
 
-    for (int i = 0; i < n; i++) {
-        printf("----------------------------------------\n");
-        printf("Inserindo o valor: %d\n", values[i]);
+        if (option == 0) break;
 
-        root = tree_insert(root, &values[i], compare_ints);
-
-        printf("\nEstrutura atual da arvore (deitada):\n");
-        print_tree(root, print_int);
-        printf("\n----------------------------------------\n\n");
+        switch (option) {
+            case 1: {
+                printf("Digite o valor inteiro para INSERIR: ");
+                scanf("%d", &value);
+                int* new_val = (int*) malloc(sizeof(int));
+                *new_val = value;
+                root = tree_insert(root, new_val, compare_ints);
+                printf("\nValor %d inserido com sucesso!\n", value);
+                printf("\nEstrutura Apos Insercao:\n");
+                print_tree(root, print_int);
+                printf("\nPressione Enter para continuar...");
+                getchar(); getchar();
+                break;
+            }
+            case 2: {
+                printf("Digite o valor inteiro para REMOVER: ");
+                scanf("%d", &value);
+                root = tree_delete(root, &value, compare_ints);
+                printf("\nProcesso de remocao concluido!\n");
+                printf("\nEstrutura Apos Remocao:\n");
+                print_tree(root, print_int);
+                printf("\nPressione Enter para continuar...");
+                getchar(); getchar();
+                break;
+            }
+            case 3: {
+                if (root == NULL) {
+                    printf("\nA arvore esta vazia!\n");
+                    printf("\nPressione Enter para continuar...");
+                    getchar(); getchar();
+                } else {
+                    getchar();
+                    traverse_inorder_step_by_step(root, root);
+                    printf("\nPercurso finalizado!\n");
+                    printf("Pressione Enter para continuar...");
+                    getchar();
+                }
+                break;
+            }
+            case 4: {
+                clear_screen();
+                printf("=== ESTRUTURA ATUAL DA ARVORE ===\n\n");
+                print_tree(root, print_int);
+                printf("\nPressione Enter para continuar...");
+                getchar(); getchar();
+                break;
+            }
+            case 5: {
+                run_benchmark();
+                break;
+            }
+            default:
+                printf("\nOpcao invalida!\n");
+                getchar(); getchar();
+                break;
+        }
     }
-
 
     tree_free(root);
     return 0;
 }
-
-/*
-    APS 1: Os alunos deverão construir um software que seja capaz de realizar e representar as operações (inserir, remover,
-    percorrer{sinalizando qual é o nó atual}) em uma estrutura de dados não linear (à escolha dos alunos). Esta representação deverá ser visual
-    para que o usuário do sistema consiga perceber a movimentação que está acontecendo na árvore (passo a passo).
-    APS 2: Os alunos deverão utilizar a APS1 para construir uma nova opção em um menu onde será necessário realizar a construção e
-    visualização de um grafo a partir de uma matriz de adjacência. Além disto nesta representação deve ser capaz de ser representado o peso
-    de cada aresta e calcular o caminho mínimo.
-
-    Desafio 1: Usando a APS1 os alunos deverão gerar árvores de diversos tamanhos e realizar comparativos entre as formas de busca dentro
-    da estrutura para levantar uma relação de desempenho de cada forma de busca.
-    Desafio 2: Simular a função de um GPS para calcular a melhor rota baseado em tempo ou baseado em distância ou baseado em menos
-    pedágios ou um mix personalizado disso.
- */

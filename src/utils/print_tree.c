@@ -1,19 +1,25 @@
 #include "utils.h"
 #include <stdio.h>
 
-static void print_tree_aux(BinaryTree* node, PrintFn print_data, int level) {
+static void print_tree_aux(BinaryTree* node, PrintFn print_data, int level, BinaryTree* target) {
     if (node == NULL) return;
 
     for (int i = 0; i < level; i++) {
         printf(" |--");
     }
 
-    printf(" [");
-    print_data(node->data);
-    printf("] (h:%d)\n", node->height);
+    if (target != NULL && node == target) {
+        printf(" ==> [");
+        print_data(node->data);
+        printf("] <== (h:%d)\n", node->height);
+    } else {
+        printf(" [");
+        print_data(node->data);
+        printf("] (h:%d)\n", node->height);
+    }
 
-    print_tree_aux(node->left, print_data, level + 1);
-    print_tree_aux(node->right, print_data, level + 1);
+    print_tree_aux(node->left, print_data, level + 1, target);
+    print_tree_aux(node->right, print_data, level + 1, target);
 }
 
 void print_tree(BinaryTree* root, PrintFn print_data) {
@@ -21,7 +27,15 @@ void print_tree(BinaryTree* root, PrintFn print_data) {
         printf("(árvore vazia)\n");
         return;
     }
-    print_tree_aux(root, print_data, 0);
+    print_tree_aux(root, print_data, 0, NULL);
+}
+
+void print_tree_highlight(BinaryTree* root, PrintFn print_data, BinaryTree* target) {
+    if (root == NULL) {
+        printf("(árvore vazia)\n");
+        return;
+    }
+    print_tree_aux(root, print_data, 0, target);
 }
 
 void print_int(const void* data) {

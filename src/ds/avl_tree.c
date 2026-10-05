@@ -106,3 +106,83 @@ BinaryTree* tree_insert(BinaryTree* root, void* data, CompareFn compare) {
 
     return root;
 }
+
+static BinaryTree* get_min_node(BinaryTree* node) {
+    BinaryTree* current = node;
+    while (current->left != NULL) {
+        current = current->left;
+    }
+    return current;
+}
+
+BinaryTree* tree_delete(BinaryTree* root, void* data, CompareFn compare) {
+    if (root == NULL) return NULL;
+
+    int cmp = compare(data, root->data);
+
+    if (cmp < 0) {
+        root->left = tree_delete(root->left, data, compare);
+    } else if (cmp > 0) {
+        root->right = tree_delete(root->right, data, compare);
+    } else {
+        if (root->left == NULL || root->right == NULL) {
+            BinaryTree* temp = root->left ? root->left : root->right;
+
+            if (temp == NULL) {
+                temp = root;
+                root = NULL;
+            } else {
+                *root = *temp;
+            }
+            free(temp);
+        } else {
+            BinaryTree* temp = get_min_node(root->right);
+            root->data = temp->data;
+            root->right = tree_delete(root->right, temp->data, compare);
+        }
+    }
+
+    if (root == NULL) return NULL;
+
+    update_height(root);
+
+    int balance = get_balance_factor(root);
+
+    if (balance > 1 && get_balance_factor(root->left) >= 0) {
+        return rotate_right(root);
+    }
+
+    if (balance > 1 && get_balance_factor(root->left) < 0) {
+        root->left = rotate_left(root->left);
+        return rotate_right(root);
+    }
+
+    if (balance < -1 && get_balance_factor(root->right) <= 0) {
+        return rotate_left(root);
+    }
+
+    if (balance < -1 && get_balance_factor(root->right) < 0) {
+        root->right = rotate_right(root->right);
+        return rotate_left(root);
+    }
+
+    return root;
+}
+
+BinaryTree* tree_search_avl(BinaryTree* root, void* data, CompareFn compare) {
+    if (root == NULL) return NULL;
+    int cmp = compare(data, root->data);
+    if (cmp < 0) return tree_search_avl(root->left, data, compare);
+    if (cmp > 0) return tree_search_avl(root->right, data, compare);
+    return root;
+}
+
+BinaryTree* tree_search_linear(BinaryTree* root, void* data, CompareFn compare) {
+    if (root == NULL) return NULL;
+    if (compare(data, root->data) == 0) return root;
+
+    BinaryTree* left_res = tree_search_linear(root->left, data, compare);
+    if (left_res != NULL) return left_res;
+
+    return tree_search_linear(root->right, data, compare);
+}
