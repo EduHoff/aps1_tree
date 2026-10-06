@@ -14,5 +14,6 @@ typedef void (*PrintFn)(const void* data);
 void print_tree(BinaryTree* root, PrintFn print_data);
 void print_tree_highlight(BinaryTree* root, PrintFn print_data, BinaryTree* target);
 void print_int(const void* data);
+void traverse_inorder_step_by_step(BinaryTree* node, BinaryTree* root);
 
 void run_benchmark(void);

@@ -3,21 +3,6 @@
 #include "ds.h"
 #include "utils.h"
 
-static void traverse_inorder_step_by_step(BinaryTree* node, BinaryTree* root) {
-    if (node == NULL) return;
-
-    traverse_inorder_step_by_step(node->left, root);
-
-    clear_screen();
-    printf("=== VISUALIZACAO PASSO A PASSO DO PERCURSO (EM-ORDEM) ===\n\n");
-    print_tree_highlight(root, print_int, node);
-    printf("\n[Sinalizador '==>'] Visitando o no: %d\n", *(int*)node->data);
-    printf("Pressione Enter para ir ao proximo no...");
-    getchar();
-
-    traverse_inorder_step_by_step(node->right, root);
-}
-
 int main(void) {
     BinaryTree* root = NULL;
     int option = 0;
